@@ -3,12 +3,12 @@
 The code uses the exit() function, so it is not possible to use the buffer overflow vulnerability on $eip to execute a command in the return of the function, we will be able to use the GOT vulnerability (Global Offset Table / overwriting GOT)
 
 ```
-   0x080484ff <+61>:	call   0x80483d0 <exit@plt>
+   0x080484ff <+61>:	call   ´ <exit@plt>
 
 (gdb) disas 0x80483d0
 Dump of assembler code for function exit@plt:
    0x080483d0 <+0>:	jmp    *0x8049838
-   0x080483d6 <+6>:	push   $0x28
+   0x080483d6 <+6>:	push   $0x28´
    0x080483db <+11>:	jmp    0x8048370
 End of assembler dump.
 ```
@@ -47,3 +47,4 @@ $2 = 134513828
 
 
 flag : d3b7bf1025225bd715fa8ccb54ef06ca70b9125ac855aeab4878217177f41a31
+
